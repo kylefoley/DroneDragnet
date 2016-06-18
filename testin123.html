@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link href="ionic.min.css" rel="stylesheet">
+<link href="ionic.css" rel="stylesheet">
+<link href="ionic.bundle.min.js">
+<link href="ionic.bundle.js">
+<div style="text-align:center;">
+    <head>
+        <div class="bar bar-header bar-light"><h1 class="title">DroneDragnet</h1></div><!DroneDragnet Header>
+        <br>
+        <br>
+        <br>
+        <div id="status"><p style="padding: 3%"><input type="radio" class="status" value="true" data-bind="status" checked>Manual
+        <input type="radio" class="status" name="status" value="true" data-bind="status">Automatic</p></div>
+        <br><br><br>
+        <button class="button button-large button-assertive" id="Initatiate_Capture">Initiate Capture</button><!Initiate Capture Button>
+        <button class="button button-large button-balanced" id="Disengage">Disengage</button><!Disengage button>
+        <br>
+        <br>
+        <div class="list">
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input type="text" placeholder="Custom Command"><!Custom Command Input>
+                </label>
+                <button class="button button-small">
+                    Execute
+                </button>
+            </div>
+
+        </div>
+
+        <script>
+            var namespace = "";
+            var msgdata={};
+            var ip="flytpod:9090";
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(msgdata),
+                url: "http://"+ip+"/ros/get_global_namespace",
+                success: function(data){
+                    if(data.success){
+                        namespace=data.param_info.param_value;//If success, writes  actual namespace to namespace
+                    }
+
+                },
+                error: function(data) {
+                    document.write("Check Connection to FlytPOD")
+                }
+            })
+            ;
+
+            var status = false;
+
+            if(status = true)
+                    //If radio button with class "status" and ID "manual" is clicked, enable the following.
+            {
+
+
+                $("#Initatiate_Capture").click(function () {
+
+
+                    msgdata["app_name"] = "app2";
+                    msgdata["arguments"] = "3";
+
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: JSON.stringify(msgdata),
+                        url: "http://" + ip + "/ros/" + namespace + "/navigation/exec_script",
+                        success: function (data) {
+                            document.write("done")
+                        },
+
+                        error: function (data) {
+                            document.write("Try again, asshole")
+
+
+                        }
+                    });
+                })
+
+                $("#Disengage").click(function () {
+
+
+                    msgdata["app_name"] = "app2";
+                    msgdata["arguments"] = "3";
+
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        data: JSON.stringify(msgdata),
+                        url: "http://" + ip + "/ros/" + namespace + "/navigation/exec_script",
+                        success: function (data) {
+                            document.write("Poop")
+                        },
+
+                        error: function (data) {
+                            document.write("Neverrr")
+
+
+                        }
+                    });
+                }
+
+
+            else if(status = false)
+                    //If the above is not true, and "status" is marked "automatic," run the following, not checking for the clicked function.
+                {
+
+
+                    $("#Initatiate_Capture").true(function () {
+
+
+                        msgdata["app_name"] = "app2";
+                        msgdata["arguments"] = "3";
+
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            data: JSON.stringify(msgdata),
+                            url: "http://" + ip + "/ros/" + namespace + "/navigation/exec_script",
+                            success: function (data) {
+                                document.write("done")
+                            },
+
+                            error: function (data) {
+                                document.write("Try again, asshole")
+
+
+                            }
+                        });
+                    })
+                }
+            )
+            }
+        </script>
+
+
+
+</div>
+</head>
+
+<body>
+
+</body>
+</html>
