@@ -3,6 +3,7 @@
  */
 
 
+
 ////////////////////////////////////////////////////Initial Powerup//////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////Get Namespace///////////////////////////////////////////////////////////////////
 var namespace = "";
@@ -16,11 +17,13 @@ $.ajax({
     success: function (data){
         if(data.success){
             namespace=data.param_info.param_value;//If success, writes  actual namespace to namespace
+            console.log("Namespace go",data)
+
         }
 
     },
     error: function(data) {
-        document.write("Check Connection to FlytPOD")
+        console.log("Namespace no-go",data)
     }
 });
 /////////////////////////////////////////////////////////Initilize websocket/////////////////////////////////////////////////////
@@ -45,9 +48,13 @@ $.ajax({
     type: "GET",
     dataType: "json",
     url: "http://"+ip+"/ros/"+namespace+"/mavros/battery",
-    success: function(data){
-        console.log(data);
-    }
+    success: function (data){
+            console.log("Battery go",data)
+    },
+
+    error: function (data){
+    console.log("Battery no-go",data)
+}
 });
 
 
@@ -77,11 +84,11 @@ $.ajax({
         data: JSON.stringify(msgdata),
         url: "http://"+ip+"/ros/"+namespace+"/navigation/waypoint_set",
         success: function (data){
-            console.log(data);
+            console.log("Waypoint set go",data);
         },
 
         error: function (data) {
-            document.write("Try again, asshole")
+            console.log("Waypoint set no-go",data)
 
 
         }
@@ -96,7 +103,10 @@ $.ajax({
     data: JSON.stringify(msgdata),
     url: "http://"+ip+"/ros/"+namespace+"/navigation/take_off",
     success: function(data){
-        console.log(data);
+        console.log("Takeoff go",data);
+    },
+    error: function (data) {
+        console.log("Takeoff no-go",data)
     }
 });
 
@@ -113,11 +123,11 @@ $("#Initatiate_Capture").click(function() {
         data: JSON.stringify(msgdata),
         url: "http://"+ip+"/ros/"+namespace+"/navigation/waypoint_execute",
         success: function(data){
-            document.write("omw");
+            console.log("Waypoints execute go",data);
         },
 
         error: function(data){
-            document.write("Ya can't get there from here")
+            console.log("Waypoint execute no-go",data)
         }
         })
 
@@ -137,11 +147,11 @@ $("#Disengage").click(function() {
         data: JSON.stringify(msgdata),
         url: "http://"+ip+"/ros/"+namespace+"/navigation/exec_script",
         success: function (data) {
-            document.write("Poop")
+            console.log("Test script go",data)
         },
 
         error: function (data) {
-            document.write("Neverrr")
+            console.log("Test script no-go",data)
 
 
         }
