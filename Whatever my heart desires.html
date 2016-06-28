@@ -18,7 +18,23 @@
     <br>
     <br>
     <br>
-
+    <p>Voltage:</p>
+    <div id="voltage"></div>
+    <br>
+    <p>Current:</p>
+    <div id="current"></div>
+    <br>
+    <p>Remaining:</p>
+    <div id="remaining"></div>
+    <br>
+    <br>
+    <br>
+    <form action="">
+        <input type="radio" name="coordinate" id="GPS"> GPS
+        <input type="radio" name="coordinate" id="ECEF"> ECEF
+        <input type="radio" name="coordinate" id="Azimuth"> Azimuth
+    </form>
+    <br>
 
 
 
@@ -34,7 +50,7 @@
 <div class="list">
     <div class="item item-input-inset">
         <label class="item-input-wrapper">
-            <input type="text" placeholder="Custom Command"><!Custom Command Input>
+            <input type="text" id="custom" placeholder="Custom Command"><!Custom Command Input>
         </label>
         <button class="button button-small">
             Execute

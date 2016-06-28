@@ -1,159 +1,1 @@
-/**
- * Created by kyle and matt on 6/17/16.
- */
-
-
-
-////////////////////////////////////////////////////Initial Powerup//////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////Get Namespace///////////////////////////////////////////////////////////////////
-var namespace = "";
-var msgdata={};
-var ip="flytpod:9090";
-$.ajax({
-    type: "POST",
-    dataType: "json",
-    data: JSON.stringify(msgdata),
-    url: "http://"+ip+"/ros/get_global_namespace",
-    success: function (data){
-        if(data.success){
-            namespace=data.param_info.param_value;//If success, writes  actual namespace to namespace
-            console.log("Namespace go",data)
-
-        }
-
-    },
-    error: function(data) {
-        console.log("Namespace no-go",data)
-    }
-});
-/////////////////////////////////////////////////////////Initilize websocket/////////////////////////////////////////////////////
-var  ros= new ROSLIB.Ros({
-    url : "ws://"+ip+"/websocket"
-});
-
-ros.on('connection', function() {
-    console.log('Connected to websocket server.');
-});
-
-ros.on('error', function() {
-    console.log('Error connecting to websocket server.', error);
-});
-
-ros.on('close', function() {
-    console.log('Connection to websocket server closed.');
-});
-//////////////////////////////////////////////////////////////Battery Level//////////////////////////////////////////////////////
-
-$.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "http://"+ip+"/ros/"+namespace+"/mavros/battery",
-    success: function (data){
-            console.log("Battery go",data)
-    },
-
-    error: function (data){
-    console.log("Battery no-go",data)
-}
-});
-
-
-
-///////////////////////////////////////////////////////////Drone Detected////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////Setting Waypoints//////////////////////////////////////////////////////////////
-
-
-    var  msgdata=[];
-    msgdata[1]={};
-    msgdata[1]["frame"]=3;
-    msgdata[1]["command"]= 16;
-    msgdata[1]["is_current"]= false;
-    msgdata[1]["autocontinue"]= true;
-    msgdata[1]["param1"]= 0;
-    msgdata[1]["param2"]= 1;
-    msgdata[1]["param3"]= 0;
-    msgdata[1]["param4"]= 0;
-    msgdata[1]["x_lat"]= 43.043141;
-    msgdata[1]["y_long"]= -76.114993;
-    msgdata[1]["z_lat"]= 10;
-
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        data: JSON.stringify(msgdata),
-        url: "http://"+ip+"/ros/"+namespace+"/navigation/waypoint_set",
-        success: function (data){
-            console.log("Waypoint set go",data);
-        },
-
-        error: function (data) {
-            console.log("Waypoint set no-go",data)
-
-
-        }
-    });
-//////////////////////////////////////////////////////////Take Off//////////////////////////////////////////////////////////////////////////////
-
-var msgdata={};
-msgdata["takeoff_alt"]=4.00;
-$.ajax({
-    type: "POST",
-    dataType: "json",
-    data: JSON.stringify(msgdata),
-    url: "http://"+ip+"/ros/"+namespace+"/navigation/take_off",
-    success: function(data){
-        console.log("Takeoff go",data);
-    },
-    error: function (data) {
-        console.log("Takeoff no-go",data)
-    }
-});
-
-///////////////////////////////////////////////////////////Make Decision///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////Initiate Capture Button/////////////////////////////////////////////////////////////
-
-$("#Initatiate_Capture").click(function() {
-
-    var  msgdata={};
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        data: JSON.stringify(msgdata),
-        url: "http://"+ip+"/ros/"+namespace+"/navigation/waypoint_execute",
-        success: function(data){
-            console.log("Waypoints execute go",data);
-        },
-
-        error: function(data){
-            console.log("Waypoint execute no-go",data)
-        }
-        })
-
-    });
-
-//////////////////////////////////////////////////////////Disengage Button//////////////////////////////////////////////////////////////
-$("#Disengage").click(function() {
-
-
-    msgdata["app_name"] = "app2";
-    msgdata["arguments"] = "3";
-
-
-    $.ajax({
-        type: "POST",
-        dataType: "json",
-        data: JSON.stringify(msgdata),
-        url: "http://"+ip+"/ros/"+namespace+"/navigation/exec_script",
-        success: function (data) {
-            console.log("Test script go",data)
-        },
-
-        error: function (data) {
-            console.log("Test script no-go",data)
-
-
-        }
-    });
-})
+/** * Created by kyle and matt on 6/17/16. */////////////////////////////////////////////////////Initial Powerup////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Check Coordinates/////////////////////////////////////////////////////var coordinate={}$("#GPS").click(function() {    console.log("GPS"),        coordinate="GPS"});$("#ECEF").click(function() {    console.log("ECEF"),        coordinate="ECEF"});$("#Azimuth").click(function() {    console.log("Azimuth"),        coordinate = "Azimuth"});/////////////////////////////////////////////////////Get Namespace///////////////////////////////////////////////////////////////////var namespace = "flytsim";var msgdata={};var ip="localhost:9090";$.ajax({    type: "POST",    dataType: "json",    data: JSON.stringify(msgdata),    url: "http://"+ip+"/ros/get_global_namespace",    success: function (data){        if(data.success){            namespace=data.param_info.param_value;//If success, writes  actual namespace to namespace            console.log("Namespace go",data)        }    },    error: function(data) {        console.log("Namespace no-go",data)    }});/////////////////////////////////////////////////////////Initilize websocket/////////////////////////////////////////////////////var  ros= new ROSLIB.Ros({    url : "ws://"+ip+"/websocket"});ros.on('connection', function() {    console.log('Connected to websocket server.');});ros.on('error', function() {    console.log('Error connecting to websocket server.');});ros.on('close', function() {    console.log('Connection to websocket server closed.');});//////////////////////////////////////////////////////////////Battery Level//////////////////////////////////////////////////////var listenerBatteryStatus = new ROSLIB.Topic({    ros :ros,    name : '/'+namespace+'/mavros/battery',    messageType : 'mavros_msgs/BatteryStatus',    throttle_rate: 200});listenerBatteryStatus.subscribe(function(message) {    $("#voltage").html(message.voltage, "Voltage");    $("#current").html(message.current);    $("#remaining").html(message.remaining);});///////////////////////////////////////////////////////////Custom command input/////////////////////////////////////////////var msgdata={};var "#custom"="";$.ajax({    type: "POST",    dataType: "json",    data: JSON.stringify(msgdata),    url: "http://"+ip+"/ros/"+namespace+"/navigation/"+custom+"",    success: function(data){        console.log("Custom command go",data);    },    error: function (data) {        console.log("Custom command no-go",data)    }});///////////////////////////////////////////////////////////Drone Detected///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Take Off//////////////////////////////////////////////////////////////////////////////var msgdata={};msgdata["takeoff_alt"]=3.00;$.ajax({    type: "POST",    dataType: "json",    data: JSON.stringify(msgdata),    url: "http://"+ip+"/ros/"+namespace+"/navigation/take_off",    success: function(data){        console.log("Takeoff go",data);    },    error: function (data) {        console.log("Takeoff no-go",data)    }});///////////////////////////////////////////////////////////Make Decision//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Initiate Capture Button/////////////////////////////////////////////////////////////$("#Initatiate_Capture").click(function(){//////////////////////////////////////////////////////////Setting Waypoints//////////////////////////////////////////////////////////////    var x_in={};    var y_in={};    var z_in={};    var lat_in={};    var long_in={};    var alt_in={};    var azimuth_in={};    var range_in={};    var angle_in={};    var x_out={};    var y_out={};    var z_out={};    if (coordinate="GPS")    {        console.log("GPS go");        lat_in = x_out;        long_in = y_out;        alt_in = z_out;    }    else if (coordinate="ECEF")    {        console.log("ECEF go");        x_in = x_out;        y_in = y_out;        z_in = z_out;    }    else if (coordinate="Azimuth")    {        console.log("Azimuth go");        azimuth_in = x_out;        range_in = y_out;        angle_in = z_out;    }var  msgdata=[];msgdata[1]={};msgdata[1]["frame"]=1;msgdata[1]["command"]= 16;msgdata[1]["is_current"]= false;msgdata[1]["autocontinue"]= true;msgdata[1]["param1"]= 0;msgdata[1]["param2"]= 1;msgdata[1]["param3"]= 0;msgdata[1]["param4"]= 0;msgdata[1]["x_lat"]= 10;msgdata[1]["y_long"]= 10;msgdata[1]["z_lat"]= 10;$.ajax({    type: "POST",    dataType: "json",    data: JSON.stringify(msgdata),    url: "http://"+ip+"/ros/"+namespace+"/navigation/waypoint_set",    success: function (data){        console.log("Waypoint set go",data);    },    error: function (data) {        console.log("Waypoint set no-go",data)    }});});//////////////////////////////////////////////////////////Disengage Button//////////////////////////////////////////////////////////////$("#Disengage").click(function() {    var  msgdata={};    $.ajax({        type: "POST",        dataType: "json",        data: JSON.stringify(msgdata),        url: "http://"+ip+"/ros/"+namespace+"/navigation/land",        success: function (data) {            console.log("Land go",data)        },        error: function (data) {            console.log("Land no-go",data)        }    });})
