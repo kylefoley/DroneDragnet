@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+<head lang="en">
+<link href="ionic.min.css" rel="stylesheet">
+<link href="ionic.css" rel="stylesheet">
+<link href="ionic.bundle.min.js">
+<link href="ionic.bundle.js">
+<script src="eventemitter2.min.js"></script>
+<script src="jquery.min.js"></script>
+<script src="roslib.min.js"></script>
+<script src="roslib.js"></script>
+<script src="EventEmitter.js"></script>
+</head>
+<body>
+<body style= "background-color: rgb(2,132,130)">
+<div style="text-align:center">
+    <div class="bar bar-header bar-clear">
+        <h1 class="title">DroneDragnet</h1>
+    </div>
+<div class="tl">
+    <h3 class="title">HUD</h3>
+
+    <div class="col-md-3">
+        <section class="panel">
+            <div class="panel-body HUD-container">
+                <h4 class="widget-h">HUD</h4>
+                <div id="tp">
+
+                    <div id="HUDw" class="container">
+                        <div id="back" class="container">
+
+                        </div>
+                        <div id="ground" class="container"></div>
+                    </div>
+                    <div id="roll-gauge" class="row">
+                        <div class="col-md-8 col-md-offset-2"><img  src="images/roll_gauge.png" id ="img-roll-gauge" width=75%></div>
+                    </div>
+
+                    <div id="arrow" class="row">
+                        <div class="col-md-2 col-md-offset-5"><img  src="images/arrow.png"  width=75%></div>
+                        <div class="col-md-4 col-md-offset-4 roll-value" style="color:black;font-size:xx-small;text-align: center;" ></div>
+                    </div>
+                    <div id="scale" class="row">
+                        <div class="col-md-4 col-md-offset-4 pitch-value" style="position:absolute;top:-5px;color:black;font-size:xx-small;text-align: center;" ></div>
+                        <div class="col-md-10 col-md-offset-1"><img  src="images/crosshairs.png"  width=75%></div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+    </div>
+</div>
+
+
+<div class="br">
+
+    <h3 class="title">Vehicle Information</h3>
+<br>
+<br>
+<br>
+    <div class="flexcontainer" style="margin-left: 30px;">
+    <div class="flexitem">
+    <div id="voltage"></div><br><p>Voltage</p>
+    </div>
+    <br>
+    <div class="flexitem">
+        <div id="vehicle-mode-text"></div><br><p>Vehicle State</p>
+    </div>
+    <br>
+    <div class="flexitem">
+    <div id="satellites"></div><br><p>Satellites</p>
+    </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="flexcontainer" style="margin-left: 30px;">
+        <div class="flexitem">
+            <div id="gspeed"></div><br><p>Speed</p>
+        </div>
+        <br>
+        <div class="flexitem">
+            <div id="halt"></div><br><p>Altitude</p>
+        </div>
+        <br>
+        <div class="flexitem">
+            <div id="head"></div><br><p>Heading</p>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="bl">
+
+    <h3 class="title" style="text-align:center;">Settings/Debug Menu</h3>
+
+    <br>
+
+
+
+    <p style="text-align: center;
+       font-size: 18px;">Coordinate Input:</p>
+    <form action="">
+
+        <input type="radio" name="coordinate" id="GPS"> GPS
+        <input type="radio" name="coordinate" id="ECEF"> ECEF
+        <input type="radio" name="coordinate" id="Azimuth"> Azimuth
+    </form>
+
+
+    <div class="flexcontainer speci">
+        <div class="flexitem">
+            <button class="button button-block button-assertive" id="RTH">
+                RTH
+            </button>
+        </div>
+        <br>
+        <div class="flexitem">
+            <button class="button button-block button-assertive" id="takeoff">
+                Take Off
+            </button>
+        </div>
+        <br>
+        <div class="flexitem">
+            <button class="button button-block button-assertive" id="Disengage">
+                Land
+            </button>
+        </div>
+    </div>
+
+    <div class="flexcontainer speci" style="margin-left: 30px;">
+        <div class="flexitem">
+            <button class="button button-block button-balanced" id="testbox">
+                Test Box
+            </button>
+        </div>
+        <br>
+        <div class="flexitem">
+            <button class="button button-block button-balanced" id="Initiate_Capture">
+                Start Mission
+            </button>
+        </div>
+        <br>
+        <div class="flexitem">
+            <button class="button button-block button-balanced">
+                Actuate Servo
+            </button>
+        </div>
+    </div>
+
+    <div class="flexcontainer speci" style="margin-left: 30px;">
+        <div class="flexitem">
+            <button class="button button-block button-balanced" id="wp1">
+                Waypoint 1
+            </button>
+        </div>
+        <br>
+        <div class="flexitem">
+            <button class="button button button-block button-balanced" id="wp2">
+                Waypoint 2
+            </button>
+        </div>
+        <br>
+        <div class="flexitem">
+            <button class="button button-block button-balanced" id="future">
+                Future Use
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="tr">
+
+    <h3 class="title" style="text-align:center;">IR Video Feed</h3>
+    <br>
+    <br>
+    <head>
+        <meta name="viewport" content="width=device-width, minimum-scale=0.1">
+    </head>
+    <div style="align-content: center">
+        <img style="-webkit-user-select: none" src= "http://flytpod:8080/stream?topic=/flytpod/flytcam/image_color">
+    </img>
+    </div>
+</div>
+</div>
+
+
+
+
+
+</body>
+
+<script src="Java_Files.js"></script>
+
+</html>

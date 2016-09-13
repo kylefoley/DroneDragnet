@@ -4,9 +4,9 @@
 <link href="ionic.css" rel="stylesheet">
 <link href="ionic.bundle.min.js">
 <link href="ionic.bundle.js">
-<script type="text/javascript" src="http://cdn.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-<script type="text/javascript" src="http://cdn.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="eventemitter2.min.js"></script>
+<script src="jquery.min.js"></script>
+<script src="roslib.min.js"></script>
 <script src="roslib.js"></script>
 <script src="EventEmitter.js"></script>
 <div style="text-align:center;">
@@ -14,8 +14,15 @@
 
 
 <head>
-    <div class="bar bar-header bar-light"><h1 class="title">DroneDragnet</h1></div><!DroneDragnet Header>
+    <div class="bar bar-header bar-dark"><h1 class="title">DroneDragnet</h1></div><!DroneDragnet Header>
     <br>
+    <br>
+    <br>
+    <p>Check for auto-engage</p>
+    <form action="">
+        <input type="checkbox" valve="auto_engage" id="yes"><br>
+    </form>
+    <p id="auto_engage"></p>
     <br>
     <br>
     <p>Voltage:</p>
@@ -29,6 +36,12 @@
     <br>
     <br>
     <br>
+    <!--<select>
+        <option name="coordinate" id="GPS">GPS</option>
+        <option name="coordinate" id="ECEF">ECEF</option>
+        <option name="coordinate" id="Azimuth">Azimuth</option>
+    </select>-->
+
     <form action="">
         <input type="radio" name="coordinate" id="GPS"> GPS
         <input type="radio" name="coordinate" id="ECEF"> ECEF
@@ -36,13 +49,15 @@
     </form>
     <br>
 
-
-
-<button class="button button-large button-assertive" id="Initatiate_Capture">Initiate Capture</button><!Initiate Capture Button>
-<button class="button button-large button-balanced" id="Disengage">Disengage</button><!Disengage button>
+    <button class="button button-large button-assertive" id="Initiate_Capture">Initiate Capture</button><!Initiate Capture Button>
+    <button class="button button-large button-balanced" id="Disengage">Disengage</button><!Disengage button>
     <br>
     <br>
-
+    <button class="button button button-light" id="testbox">Test Box</button><!WP1 test button>
+    <button class="button button button-light" id="wp2">Start</button><!WP2 test button>
+    <button class="button button button-light" id="wp3">WP3</button><!WP3 test button>
+    <button class="button button button-light" id="wp4">WP4</button><!WP4 test button>
+    <button class="button button button-light" id="wp5">Home</button><!WP5 test button>
 
 
 
